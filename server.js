@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const neo4j = require("neo4j-driver");
 const cors = require("cors");
@@ -8,8 +9,8 @@ app.use(express.json());
 
 // Connect to your DB
 const driver = neo4j.driver(
-  "neo4j+s://aaf76fe4.databases.neo4j.io",
-  neo4j.auth.basic("aaf76fe4", "BYTdYxxXXvd0UlDor6BM8uneGB6N-cKDv4X84CX6R5g")
+  process.env.NEO4J_URI,
+  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 );
 
 // API to add task
@@ -43,4 +44,5 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("Server running"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
